@@ -101,9 +101,10 @@ fn bulge_to_arc_points(p1: &Vec2, p2: &Vec2, bulge: f64, segments: usize) -> Vec
     // Distance from midpoint to center
     let d = (radius * radius - (chord / 2.0).powi(2)).max(0.0).sqrt();
 
-    // For positive bulge (CCW), center is to the left of P1→P2 direction
-    // For negative bulge (CW), center is to the right
-    let sign = if bulge > 0.0 { -1.0 } else { 1.0 };
+    // perp = (-dy, dx)/chord points to the LEFT of P1→P2 direction.
+    // Positive bulge = CCW from P1 to P2, which requires the center on the
+    // LEFT of P1→P2 (so the CCW sweep traces the SHORT arc on the right side).
+    let sign = if bulge > 0.0 { 1.0 } else { -1.0 };
     let cx = mx + sign * perp_x * d;
     let cy = my + sign * perp_y * d;
 
